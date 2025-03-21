@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MZTEC PayPal Payment</title>
+    <script src="https://www.paypal.com/sdk/js?client-id=AWdXrmGMG2Pgk4E0-xKc3LKFBLbs7ZrZumTXVl2BIkr5prjEgq_1J9xaig-KUKzjtvIACBs1IQOWQWy3&currency=USD"></script>
+</head>
+<body>
+    <h1>Pay MZTEC Fees</h1>
+    
+    <label for="amount">Enter Amount (USD):</label>
+    <input type="number" id="amount" min="1" value="100" required>
+    
+    <div id="paypal-button-container"></div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            paypal.Buttons({
+                createOrder: function (data, actions) {
+                    const amount = document.getElementById("amount").value;
+                    return fetch("/create-payment", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ amount: amount })
+                    })
+                    .then(response => response.json())
+                    .then(order => order.id);
+                },
+                onApprove: function (data, actions) {
+                    return fetch(`/capture-payment/${data.orderID}`, { method: "POST" })
+                        .then(response => response.json())
+                        .then(details => {
+                            alert("Payment Successful! Transaction ID: " + details.id);
+                        });
+                }
+            }).render("#paypal-button-container");
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Dashboard - Mzuzu Technical College</title>
+  <!-- Include Animate.css for animations -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+  <link href="https://fonts.googleapis.com/css?family=Poppins:400,500,700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <style>
+    :root {
+      --primary-color: #002147;       /* Deep blue */
+      --secondary-color: #ffd700;     /* Gold */
+      --accent-color: #e63946;        /* Red */
+      --text-color: #2d3748;          /* Dark gray for text */
+      --background-color: #f0f0f0;    /* Light gray background */
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      background: var(--background-color);
+      color: var(--text-color);
+      line-height: 1.6;
+    }
+
+    .dashboard-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+
+    .dashboard-header {
+      background: var(--primary-color);
+      color: white;
+      padding: 1.5rem;
+      border-radius: 10px;
+      margin-bottom: 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .dashboard-header h1 {
+      font-size: 2rem;
+      font-weight: 700;
+    }
+
+    .profile-info {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .profile-pic {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      border: 2px solid var(--secondary-color);
+    }
+
+    .dashboard-content {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+    }
+
+    .card {
+      background: white;
+      padding: 1.5rem;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .card h2 {
+      font-size: 1.5rem;
+      color: var(--primary-color);
+      margin-bottom: 1rem;
+    }
+
+    .card p {
+      margin-bottom: 1rem;
+    }
+
+    .card ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .card ul li {
+      padding: 0.5rem 0;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .card ul li:last-child {
+      border-bottom: none;
+    }
+
+    .action-btn {
+      background: var(--secondary-color);
+      color: var(--primary-color);
+      border: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: 25px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: opacity 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .action-btn:hover {
+      opacity: 0.9;
+    }
+
+    .internship-section {
+      background: var(--accent-color);
+      color: white;
+      padding: 1.5rem;
+      border-radius: 10px;
+    }
+
+    .internship-section h2 {
+      color: white;
+    }
+
+    .internship-section p {
+      margin-bottom: 1rem;
+    }
+
+    .internship-section .action-btn {
+      background: white;
+      color: var(--accent-color);
+    }
+
+    .quick-links {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+
+    .quick-link {
+      background: white;
+      padding: 1rem;
+      border-radius: 10px;
+      text-align: center;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease;
+    }
+
+    .quick-link:hover {
+      transform: translateY(-5px);
+    }
+
+    .quick-link .material-icons {
+      font-size: 2rem;
+      color: var(--primary-color);
+    }
+
+    .quick-link h3 {
+      font-size: 1.25rem;
+      margin: 0.5rem 0;
+    }
+
+    .quick-link p {
+      font-size: 0.9rem;
+      color: #666;
+    }
+  </style>
+</head>
+<body>
+  <div class="dashboard-container">
+    <!-- Dashboard Header -->
+    <div class="dashboard-header animate__animated animate__fadeInDown">
+      <h1>Student Dashboard</h1>
+      <div class="profile-info">
+        <img src="profile-placeholder.jpg" alt="Profile" class="profile-pic">
+        <div>
+          <p>John Banda</p>
+          <p>Bachelor of Science in ICT</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Dashboard Content -->
+    <div class="dashboard-content">
+      <!-- Student Information Card -->
+      <div class="card">
+        <h2>Student Information</h2>
+        <ul>
+          <li><strong>Name:</strong> John Banda</li>
+          <li><strong>Program:</strong> Bachelor of Science in ICT</li>
+          <li><strong>Year:</strong> 3</li>
+          <li><strong>Gender:</strong> Male</li>
+          <li><strong>Age:</strong> 22</li>
+          <li><strong>Location:</strong> Mzuzu, Malawi</li>
+        </ul>
+      </div>
+
+      <!-- Internship Information Card -->
+      <div class="card internship-section">
+        <h2>Internship Information</h2>
+        <p><strong>Institution:</strong> Malawi Communications Regulatory Authority</p>
+        <p><strong>Duration:</strong> June 2024 - September 2024</p>
+        <p><strong>Supervisor:</strong> Mrs. Alice Mwale</p>
+        <button class="action-btn" onclick="viewInternshipDetails()">
+          <span class="material-icons">work</span>
+          View Details
+        </button>
+      </div>
+
+      <!-- Quick Actions Card -->
+      <div class="card">
+        <h2>Quick Actions</h2>
+        <div class="quick-links">
+          <div class="quick-link" onclick="openChat()">
+            <span class="material-icons">chat</span>
+            <h3>Chat with Supervisor</h3>
+            <p>Communicate with your internship supervisor</p>
+          </div>
+          <div class="quick-link" onclick="openPayment()">
+            <span class="material-icons">payment</span>
+            <h3>Pay Internship Fee</h3>
+            <p>Complete your internship payment</p>
+          </div>
+          <div class="quick-link" onclick="viewResults()">
+            <span class="material-icons">assignment</span>
+            <h3>View Results</h3>
+            <p>Check your academic performance</p>
+          </div>
+          <div class="quick-link" onclick="downloadLogbook()">
+            <span class="material-icons">download</span>
+            <h3>Download Logbook</h3>
+            <p>Get your internship logbook</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- JavaScript for Interactive Features -->
+  <script>
+    function openChat() {
+      alert("Opening chat with supervisor...");
+      // Implement chat functionality
+    }
+
+    function openPayment() {
+      alert("Redirecting to payment portal...");
+      // Implement payment functionality
+    }
+
+    function viewResults() {
+      alert("Loading academic results...");
+      // Implement results viewing
+    }
+
+    function viewInternshipDetails() {
+      alert("Showing internship details...");
+      // Implement internship details
+    }
+
+    function downloadLogbook() {
+      alert("Downloading logbook...");
+      // Implement logbook download
+    }
+  </script>
+</body>
+</html>

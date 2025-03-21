@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>MZTEC University - Quality Technical Education</title>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <style>
+    /* Base Styles */
+    :root {
+      --primary-color: #002147;       /* Deep blue */
+      --secondary-color: #ffd700;     /* Gold */
+      --accent-color: #e63946;        /* Red */
+      --text-color: #2d3748;          /* Dark gray for text */
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      line-height: 1.6;
+      color: var(--text-color);
+    }
+
+    /* Header (Hero) Styles */
+    .header { 
+      background: linear-gradient(
+          rgba(0, 33, 71, 0.9),
+          rgba(0, 33, 71, 0.9)
+        ),
+        url('/speedlight photography_3.jpg');
+      background-size: cover;
+      background-position: center;
+      min-height: 100vh;
+      color: white;
+      position: relative;
+      clip-path: polygon(0 0, 100% 0, 100% 90%, 0 100%);
+    }
+
+    /* Navigation Bar */
+    .nav-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between; /* Logo on left, toggle on right */
+      padding: 1.5rem 5%;
+      position: fixed;
+      width: 100%;
+      top: 0;
+      z-index: 1000;
+      background: rgba(0, 33, 71, 0.95);
+      transition: background 0.3s ease;
+    }
+
+    .logo {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--secondary-color);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      align-items: center;
+    }
+
+    .nav-links a {
+      color: white;
+      text-decoration: none;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      padding: 0.5rem 1rem;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      color: var(--secondary-color);
+    }
+
+    .register-btn {
+      background: var(--secondary-color);
+      color: var(--primary-color);
+      border-radius: 25px;
+      padding: 0.8rem 2rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: background 0.3s ease, transform 0.3s ease;
+    }
+
+    .register-btn:hover {
+      background: var(--accent-color);
+      transform: scale(1.05);
+    }
+
+    /* Hamburger Toggle (3 horizontal lines) */
+    .menu-toggle {
+      display: none; /* Hidden on desktop */
+      background: var(--primary-color);
+      padding: 0.5rem;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+    .menu-toggle span {
+      display: block;
+      width: 25px;
+      height: 2px;
+      background: #fff;  /* White lines */
+      margin: 4px 0;
+    }
+
+    .menu-toggle:hover {
+      background: var(--secondary-color);
+    }
+
+    /* Mobile Menu */
+    .mobile-menu {
+      display: none; /* Hidden by default */
+      position: absolute;
+      top: 4rem; /* Just below the fixed nav */
+      left: 0;
+      right: 0;
+      background: var(--primary-color);
+      padding: 1rem 0;
+      text-align: center;
+      flex-direction: column;
+      z-index: 1100;
+    }
+
+    .mobile-menu.active {
+      display: flex; /* Show on toggle */
+    }
+
+    .mobile-menu a {
+      color: white;
+      padding: 1rem;
+      text-decoration: none;
+      transition: background 0.3s ease;
+    }
+
+    .mobile-menu a:hover {
+      background: var(--secondary-color);
+    }
+
+    /* Hero Text */
+    .hero {
+      padding-top: 15rem;
+      text-align: center;
+    }
+
+    .hero h1 {
+      font-size: 4rem;
+      margin-bottom: 1.5rem;
+      animation: fadeInDown 1s ease-in-out;
+    }
+
+    .hero p {
+      font-size: 1.25rem;
+      margin-bottom: 2rem;
+      animation: fadeInUp 1s ease-in-out;
+    }
+
+    .cta-button {
+      background: var(--secondary-color);
+      color: var(--primary-color);
+      border-radius: 25px;
+      padding: 1rem 2rem;
+      font-weight: 600;
+      text-decoration: none;
+      animation: fadeInUp 1s ease-in-out;
+      transition: background 0.3s ease, transform 0.3s ease;
+    }
+
+    .cta-button:hover {
+      background: var(--accent-color);
+      transform: scale(1.05);
+    }
+
+    /* Sections */
+    .section {
+      padding: 5rem 5%;
+    }
+
+    .section-title {
+      text-align: center;
+      margin-bottom: 3rem;
+      font-size: 2.5rem;
+      color: var(--primary-color);
+    }
+
+    /* Admissions Process */
+    .process-steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+      margin-top: 3rem;
+    }
+
+    .process-card {
+      text-align: center;
+      padding: 2rem;
+      background: #f8f9fa;
+      border-radius: 10px;
+      transition: transform 0.3s ease;
+    }
+
+    .process-card:hover {
+      transform: translateY(-5px);
+    }
+
+    /* Courses Section */
+    .courses {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+    }
+
+    .course-card {
+      background: white;
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease;
+    }
+
+    .course-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .course-card img {
+      width: 100%;
+      border-radius: 10px;
+    }
+
+    .course-card h3 {
+      margin-top: 1rem;
+      font-size: 1.5rem;
+    }
+
+    .course-card p {
+      margin-top: 0.5rem;
+      font-size: 1rem;
+    }
+
+    /* Testimonials */
+    .testimonial-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+    }
+
+    .testimonial-card {
+      background: white;
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Contact Form */
+    .contact-form {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 1rem;
+      border: 2px solid #ddd;
+      border-radius: 8px;
+    }
+
+    /* Footer */
+    .footer {
+      background: var(--primary-color);
+      color: white;
+      padding: 3rem 5%;
+      text-align: center;
+    }
+
+    .social-links a {
+      color: white;
+      margin: 0 0.5rem;
+      text-decoration: none;
+    }
+
+    /* Responsive Rules */
+    @media (max-width: 768px) {
+      .nav-links {
+        display: none; /* Hide desktop links */
+      }
+      .menu-toggle {
+        display: block; /* Show the hamburger toggle on mobile */
+      }
+      .hero h1 {
+        font-size: 2.5rem;
+      }
+      .section-title {
+        font-size: 2rem;
+      }
+    }
+
+    /* Animations */
+    @keyframes fadeInDown {
+      from {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header Section -->
+  <header class="header" id="home">
+    <nav class="nav-container">
+      <!-- LOGO -->
+      <div class="logo">MZTEC</div>
+
+      <!-- Desktop Nav Links -->
+      <div class="nav-links">
+        <a href="index.html" class="active">Home</a>
+        <a href="courses.html">Courses</a>
+        <a href="admission.html">Admissions</a>
+        <a href="#contact">Contact</a>
+        <a href="register.html" class="register-btn">Register Now</a>
+      </div>
+
+      <!-- Hamburger Toggle (3 horizontal lines) -->
+      <div class="menu-toggle">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+
+      <!-- Mobile Dropdown Menu -->
+      <div class="mobile-menu">
+        <a href="index.html" class="active">Home</a>
+        <a href="courses.html">Courses</a>
+        <a href="admission.html">Admissions</a>
+        <a href="#contact">Contact</a>
+        <a href="register.html" class="register-btn">Register Now</a>
+      </div>
+    </nav>
+
+    <div class="hero">
+      <h1>Transform Your Future With Technical Education</h1>
+      <p>Join Malawi's Premier Technical College for Hands-On Learning</p>
+      <a href="admission.html" class="cta-button">Apply Now</a>
+    </div>
+  </header>
+
+  <!-- Admissions Process -->
+  <section class="section" id="admissions">
+    <h2 class="section-title">Admission Process</h2>
+    <div class="process-steps">
+      <div class="process-card">
+        <h3>1. Application</h3>
+        <p>Submit your online application form</p>
+      </div>
+      <div class="process-card">
+        <h3>2. Review</h3>
+        <p>Document verification and approval</p>
+      </div>
+      <div class="process-card">
+        <h3>3. Enrollment</h3>
+        <p>Complete registration and payment</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Courses Section -->
+  <section class="section" id="courses">
+    <h2 class="section-title">Our Courses</h2>
+    <div class="courses">
+      <div class="course-card">
+        <img src="https://images.unsplash.com/photo-1593642532400-2682810df593?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=80" alt="Course Image">
+        <h3>Automotive Engineering</h3>
+        <p>Learn the latest in automotive technology and repair.</p>
+      </div>
+      <div class="course-card">
+        <img src="https://images.unsplash.com/photo-1556740738-b6a63e27c4df?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=80" alt="Course Image">
+        <h3>Electrical Engineering</h3>
+        <p>Master the skills needed for a career in electrical engineering.</p>
+      </div>
+      <div class="course-card">
+        <img src="https://images.unsplash.com/photo-1593642532400-2682810df593?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=80" alt="Course Image">
+        <h3>Information Technology</h3>
+        <p>Get hands-on experience with the latest IT tools and techniques.</p>
+      </div>
+    </div>
+  
+  </section>
+
+  <!-- Testimonials -->
+  <section class="section" id="testimonials">
+    <h2 class="section-title">Student Testimonials</h2>
+    <div class="testimonial-grid">
+      <div class="testimonial-card">
+        <p>"MZTEC transformed my career prospects with practical training and industry connections."</p>
+        <h4>- John Banda, Automotive Engineering</h4>
+      </div>
+      <!-- Additional testimonials can be added here -->
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section class="section" id="contact">
+    <h2 class="section-title">Contact Us</h2>
+    <form class="contact-form">
+      <div class="form-group">
+        <input type="text" class="form-control" placeholder="Your Name" />
+      </div>
+      <div class="form-group">
+        <input type="email" class="form-control" placeholder="Your Email" />
+      </div>
+      <div class="form-group">
+        <textarea class="form-control" rows="5" placeholder="Your Message"></textarea>
+      </div>
+      <button class="register-btn" type="submit">Send Message</button>
+    </form>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <p>&copy; 2023 MZTEC University. All rights reserved.</p>
+    <div class="social-links">
+      <a href="#"><strong>Facebook</strong></a>
+      <a href="#"><strong>Twitter</strong></a>
+      <a href="#"><strong>LinkedIn</strong></a>
+    </div>
+  </footer>
+
+  <script>
+    // Mobile Menu Toggle
+    const menuToggle = document.querySelector('.menu-toggle');
+    const mobileMenu = document.querySelector('.mobile-menu');
+
+    menuToggle.addEventListener('click', () => {
+      mobileMenu.classList.toggle('active');
+    });
+
+    // Smooth scrolling for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        document.querySelector(this.getAttribute('href')).scrollIntoView({
+          behavior: 'smooth'
+        });
+      });
+    });
+
+    // Change nav background on scroll
+    window.addEventListener('scroll', () => {
+      const scrollPos = window.scrollY;
+      const nav = document.querySelector('.nav-container');
+      if (scrollPos > 100) {
+        nav.style.background = 'var(--primary-color)';
+      } else {
+        nav.style.background = 'rgba(0, 33, 71, 0.95)';
+      }
+    });
+
+    // Highlight current page in navigation
+    const currentLocation = location.href;
+    const menuItem = document.querySelectorAll('.nav-links a');
+    const menuLength = menuItem.length;
+    for (let i = 0; i < menuLength; i++) {
+      if (menuItem[i].href === currentLocation) {
+        menuItem[i].className = "active";
+      }
+    }
+  </script>
+</body>
+</html>
