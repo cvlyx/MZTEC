@@ -184,14 +184,6 @@
 
                 <button type="submit" class="btn-primary">Sign In</button>
 
-                <div class="social-login">
-                    <p>Or continue with</p>
-                    <button type="button" class="btn-primary google-btn">
-                        <i class="fab fa-google"></i>
-                        Google Account
-                    </button>
-                </div>
-
                 <div class="auth-footer">
                     Don't have an account? 
                     <a href="register.html" class="auth-link">Create account</a>
@@ -213,12 +205,6 @@
                 passwordField.type = "password";
                 eyeIcon.classList.replace('fa-eye-slash', 'fa-eye');
             }
-        }
-
-        // Google Sign-In Handler
-        function handleGoogleSignIn() {
-            // Add Google authentication logic here
-            window.location.href = '/auth/google';
         }
     </script>
 </body>
