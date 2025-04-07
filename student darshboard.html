@@ -2,276 +2,403 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Student Dashboard - Mzuzu Technical College</title>
-  <!-- Include Animate.css for animations -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Student Dashboard - Modern & Scalable</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
-  <link href="https://fonts.googleapis.com/css?family=Poppins:400,500,700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,500,700&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <style>
-    :root {
-      --primary-color: #002147;       /* Deep blue */
-      --secondary-color: #ffd700;     /* Gold */
-      --accent-color: #e63946;        /* Red */
-      --text-color: #2d3748;          /* Dark gray for text */
-      --background-color: #f0f0f0;    /* Light gray background */
+    /* Base & Reset */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Roboto', sans-serif; background: #f9f9f9; color: #333; }
+    a { text-decoration: none; color: inherit; }
+    
+    /* Wrapper Layout */
+    .wrapper {
+      display: grid;
+      grid-template-columns: 250px 1fr;
+      min-height: 100vh;
     }
-
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Poppins', sans-serif;
+    @media (max-width: 768px) {
+      .wrapper { grid-template-columns: 1fr; }
+      .sidebar { position: fixed; top: 0; left: -250px; width: 250px; height: 100%; z-index: 200; transition: left 0.3s ease; }
+      .sidebar.active { left: 0; }
+      .content { margin-top: 60px; }
+      .topbar { position: fixed; top: 0; left: 0; right: 0; z-index: 150; }
     }
-
-    body {
-      background: var(--background-color);
-      color: var(--text-color);
-      line-height: 1.6;
+    
+    /* Sidebar Navigation */
+    .sidebar {
+      background: #002147;
+      color: #fff;
+      padding: 2rem 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
     }
-
-    .dashboard-container {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 2rem;
+    .sidebar h2 { font-size: 1.5rem; text-align: center; }
+    .nav-links { list-style: none; }
+    .nav-links li { margin-bottom: 1rem; }
+    .nav-links li a {
+      display: block;
+      padding: 0.75rem 1rem;
+      border-radius: 8px;
+      transition: background 0.3s;
     }
-
-    .dashboard-header {
-      background: var(--primary-color);
-      color: white;
-      padding: 1.5rem;
-      border-radius: 10px;
-      margin-bottom: 2rem;
+    .nav-links li a:hover, .nav-links li a.active { background: rgba(255, 255, 255, 0.2); }
+    
+    /* Topbar */
+    .topbar {
+      background: #fff;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      padding: 0.75rem 1.5rem;
       display: flex;
       align-items: center;
       justify-content: space-between;
     }
-
-    .dashboard-header h1 {
-      font-size: 2rem;
-      font-weight: 700;
+    .menu-toggle { display: none; cursor: pointer; }
+    @media (max-width: 768px) {
+      .menu-toggle { display: block; }
     }
-
-    .profile-info {
+    .profile-wrapper, .more-wrapper {
+      position: relative;
       display: flex;
       align-items: center;
-      gap: 1rem;
-    }
-
-    .profile-pic {
-      width: 60px;
-      height: 60px;
-      border-radius: 50%;
-      border: 2px solid var(--secondary-color);
-    }
-
-    .dashboard-content {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 2rem;
-    }
-
-    .card {
-      background: white;
-      padding: 1.5rem;
-      border-radius: 10px;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    }
-
-    .card h2 {
-      font-size: 1.5rem;
-      color: var(--primary-color);
-      margin-bottom: 1rem;
-    }
-
-    .card p {
-      margin-bottom: 1rem;
-    }
-
-    .card ul {
-      list-style: none;
-      padding: 0;
-    }
-
-    .card ul li {
-      padding: 0.5rem 0;
-      border-bottom: 1px solid #ddd;
-    }
-
-    .card ul li:last-child {
-      border-bottom: none;
-    }
-
-    .action-btn {
-      background: var(--secondary-color);
-      color: var(--primary-color);
-      border: none;
-      padding: 0.75rem 1.5rem;
-      border-radius: 25px;
-      font-weight: 600;
+      gap: 0.75rem;
       cursor: pointer;
-      transition: opacity 0.3s ease;
+    }
+    .profile-wrapper img {
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      border: 2px solid #002147;
+    }
+    .dropdown {
+      position: absolute;
+      top: 60px;
+      right: 0;
+      background: #fff;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+      border-radius: 8px;
+      overflow: hidden;
+      display: none;
+      flex-direction: column;
+      min-width: 150px;
+      z-index: 100;
+    }
+    .dropdown a {
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid #eee;
+      transition: background 0.3s;
+    }
+    .dropdown a:last-child { border-bottom: none; }
+    .dropdown a:hover { background: #f5f5f5; }
+    
+    /* Main Content */
+    .content { padding: 2rem; }
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+    }
+    .card {
+      background: #fff;
+      border-radius: 8px;
+      padding: 1.5rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .card:hover { transform: translateY(-4px); box-shadow: 0 4px 12px rgba(0,0,0,0.12); }
+    .card h2 { margin-bottom: 1rem; font-size: 1.25rem; color: #002147; }
+    .card p { line-height: 1.5; margin-bottom: 0.75rem; }
+    
+    /* Specific Cards */
+    .student-info ul { list-style: none; }
+    .student-info li { margin-bottom: 0.5rem; }
+    
+    /* Calendar Styles */
+    .calendar-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 0.25rem;
+      margin-top: 1rem;
+    }
+    .calendar-day {
+      padding: 0.75rem;
+      text-align: center;
+      background: #e9ecef;
+      border-radius: 4px;
+    }
+    .calendar-day.current {
+      background: #002147;
+      color: #fff;
+      font-weight: bold;
+    }
+    
+    /* Chat Styles */
+    .chat-container {
       display: flex;
-      align-items: center;
+      flex-direction: column;
+      height: 300px;
+      border: 1px solid #e0e0e0;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .chat-log {
+      flex: 1;
+      padding: 0.75rem;
+      overflow-y: auto;
+      background: #f4f4f4;
+    }
+    .chat-message {
+      margin-bottom: 0.75rem;
+      display: flex;
       gap: 0.5rem;
     }
-
-    .action-btn:hover {
-      opacity: 0.9;
+    .chat-message.sent { justify-content: flex-end; }
+    .chat-bubble {
+      max-width: 70%;
+      padding: 0.5rem 0.75rem;
+      border-radius: 16px;
+      background: #e0e0e0;
     }
-
-    .internship-section {
-      background: var(--accent-color);
-      color: white;
-      padding: 1.5rem;
-      border-radius: 10px;
+    .chat-message.sent .chat-bubble { background: #002147; color: #fff; }
+    .chat-input {
+      display: flex;
+      border-top: 1px solid #ddd;
     }
-
-    .internship-section h2 {
-      color: white;
+    .chat-input input {
+      flex: 1;
+      border: none;
+      padding: 0.75rem;
+      font-size: 1rem;
     }
-
-    .internship-section p {
-      margin-bottom: 1rem;
+    .chat-input button {
+      background: #002147;
+      color: #fff;
+      border: none;
+      padding: 0 1rem;
+      cursor: pointer;
+      transition: background 0.3s;
     }
-
-    .internship-section .action-btn {
-      background: white;
-      color: var(--accent-color);
+    .chat-input button:hover { background: #001237; }
+    
+    /* Announcements Styles */
+    .announcement-list {
+      list-style: none;
+      padding-left: 1rem;
     }
-
-    .quick-links {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 1rem;
-      margin-top: 2rem;
+    .announcement-list li {
+      padding: 0.75rem;
+      border-bottom: 1px solid #eee;
     }
-
-    .quick-link {
-      background: white;
-      padding: 1rem;
-      border-radius: 10px;
-      text-align: center;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-      transition: transform 0.3s ease;
+    
+    /* Buttons */
+    .btn {
+      display: inline-block;
+      background: #002147;
+      color: #fff;
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+      transition: background 0.3s;
+      cursor: pointer;
     }
-
-    .quick-link:hover {
-      transform: translateY(-5px);
-    }
-
-    .quick-link .material-icons {
-      font-size: 2rem;
-      color: var(--primary-color);
-    }
-
-    .quick-link h3 {
-      font-size: 1.25rem;
-      margin: 0.5rem 0;
-    }
-
-    .quick-link p {
-      font-size: 0.9rem;
-      color: #666;
-    }
+    .btn:hover { background: #001237; }
   </style>
 </head>
 <body>
-  <div class="dashboard-container">
-    <!-- Dashboard Header -->
-    <div class="dashboard-header animate__animated animate__fadeInDown">
-      <h1>Student Dashboard</h1>
-      <div class="profile-info">
-        <img src="profile-placeholder.jpg" alt="Profile" class="profile-pic">
-        <div>
-          <p>John Banda</p>
-          <p>Bachelor of Science in ICT</p>
-        </div>
-      </div>
-    </div>
+  <div class="wrapper">
+    <!-- Sidebar Navigation -->
+    <nav class="sidebar" role="navigation" aria-label="Sidebar Navigation">
+      <h2>Dashboard</h2>
+      <ul class="nav-links">
+        <li><a href="#" class="active" aria-current="page"><span class="material-icons" style="vertical-align:middle;">dashboard</span> Dashboard</a></li>
+        <li><a href="#"><span class="material-icons" style="vertical-align:middle;">book</span> Courses</a></li>
+        <li><a href="#"><span class="material-icons" style="vertical-align:middle;">grade</span> Grades</a></li>
+        <li><a href="#"><span class="material-icons" style="vertical-align:middle;">chat</span> Chat</a></li>
+        <li><a href="#"><span class="material-icons" style="vertical-align:middle;">announcement</span> Announcements</a></li>
+        <li><a href="#"><span class="material-icons" style="vertical-align:middle;">settings</span> Settings</a></li>
+      </ul>
+    </nav>
 
-    <!-- Dashboard Content -->
-    <div class="dashboard-content">
-      <!-- Student Information Card -->
-      <div class="card">
-        <h2>Student Information</h2>
-        <ul>
-          <li><strong>Name:</strong> John Banda</li>
-          <li><strong>Program:</strong> Bachelor of Science in ICT</li>
-          <li><strong>Year:</strong> 3</li>
-          <li><strong>Gender:</strong> Male</li>
-          <li><strong>Age:</strong> 22</li>
-          <li><strong>Location:</strong> Mzuzu, Malawi</li>
-        </ul>
-      </div>
-
-      <!-- Internship Information Card -->
-      <div class="card internship-section">
-        <h2>Internship Information</h2>
-        <p><strong>Institution:</strong> Malawi Communications Regulatory Authority</p>
-        <p><strong>Duration:</strong> June 2024 - September 2024</p>
-        <p><strong>Supervisor:</strong> Mrs. Alice Mwale</p>
-        <button class="action-btn" onclick="viewInternshipDetails()">
-          <span class="material-icons">work</span>
-          View Details
-        </button>
-      </div>
-
-      <!-- Quick Actions Card -->
-      <div class="card">
-        <h2>Quick Actions</h2>
-        <div class="quick-links">
-          <div class="quick-link" onclick="openChat()">
-            <span class="material-icons">chat</span>
-            <h3>Chat with Supervisor</h3>
-            <p>Communicate with your internship supervisor</p>
-          </div>
-          <div class="quick-link" onclick="openPayment()">
-            <span class="material-icons">payment</span>
-            <h3>Pay Internship Fee</h3>
-            <p>Complete your internship payment</p>
-          </div>
-          <div class="quick-link" onclick="viewResults()">
-            <span class="material-icons">assignment</span>
-            <h3>View Results</h3>
-            <p>Check your academic performance</p>
-          </div>
-          <div class="quick-link" onclick="downloadLogbook()">
-            <span class="material-icons">download</span>
-            <h3>Download Logbook</h3>
-            <p>Get your internship logbook</p>
+    <!-- Main Content Area -->
+    <div class="content">
+      <!-- Topbar -->
+      <header class="topbar" role="banner" aria-label="Top Navigation">
+        <span class="menu-toggle material-icons" aria-label="Toggle Navigation" onclick="toggleSidebar()">menu</span>
+        <div class="more-wrapper" onclick="toggleMoreDropdown()" role="button" tabindex="0" aria-haspopup="true" aria-label="More Options">
+          <span class="material-icons">more_vert</span>
+          <div class="dropdown" id="more-dropdown">
+            <a href="#" role="menuitem">Notifications</a>
+            <a href="#" role="menuitem">Help</a>
+            <a href="#" role="menuitem">Feedback</a>
           </div>
         </div>
-      </div>
+        <div class="profile-wrapper" role="button" tabindex="0" aria-haspopup="true" aria-label="User Profile" onclick="toggleProfileDropdown()">
+          <img src="profile-placeholder.jpg" alt="John Banda Profile">
+          <span>John Banda</span>
+          <div class="dropdown" id="profile-dropdown" aria-label="Profile Dropdown">
+            <a href="#" role="menuitem">My Profile</a>
+            <a href="#" role="menuitem">Settings</a>
+            <a href="#" role="menuitem">Logout</a>
+          </div>
+        </div>
+      </header>
+
+      <!-- Dashboard Cards -->
+      <section class="cards">
+        <!-- Student Information Card -->
+        <div class="card student-info" aria-label="Student Information">
+          <h2>Student Information</h2>
+          <ul>
+            <li><strong>Name:</strong> John Banda</li>
+            <li><strong>Program:</strong> BSc in ICT</li>
+            <li><strong>Year:</strong> 3</li>
+            <li><strong>Location:</strong> Mzuzu, Malawi</li>
+          </ul>
+          <div class="btn" onclick="alert('Viewing academic progress...')">View Progress</div>
+        </div>
+
+        <!-- Academic Calendar Card -->
+        <div class="card" aria-label="Academic Calendar">
+          <h2>Academic Calendar</h2>
+          <div id="calendar-container">
+            <div class="calendar-grid" id="calendar-grid">
+              <!-- Calendar days will be generated here dynamically -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Supervisor Message Card -->
+        <div class="card" aria-label="Supervisor Message">
+          <h2>Supervisor Message</h2>
+          <p><strong>From:</strong> Mrs. Alice Mwale</p>
+          <p>Please review your project guidelines and submit your report by next week.</p>
+          <p><small>Received: Oct 15, 2024</small></p>
+          <div class="btn" onclick="alert('Reply functionality coming soon')">Reply</div>
+        </div>
+
+        <!-- Profile Details Card -->
+        <div class="card" aria-label="Profile Details">
+          <h2>Profile Details</h2>
+          <div style="display: flex; align-items: center; gap: 1rem;">
+            <img src="profile-placeholder.jpg" alt="Profile Picture" style="width:60px; height:60px; border-radius:50%; border:2px solid #002147;">
+            <div>
+              <p><strong>John Banda</strong></p>
+              <p>Bachelor of Science in ICT</p>
+            </div>
+          </div>
+          <div style="margin-top: 1rem;">
+            <div class="btn" onclick="alert('Edit profile functionality coming soon')">Edit Profile</div>
+          </div>
+        </div>
+
+        <!-- Chat with Supervisor Card -->
+        <div class="card" aria-label="Chat with Supervisor">
+          <h2>Chat with Supervisor</h2>
+          <div class="chat-container">
+            <div class="chat-log" id="chat-log">
+              <!-- Sample Chat Messages -->
+              <div class="chat-message received">
+                <div class="chat-bubble">Hello John, please update your project outline.</div>
+              </div>
+              <div class="chat-message sent">
+                <div class="chat-bubble">Sure, I'll send it over by today.</div>
+              </div>
+            </div>
+            <div class="chat-input">
+              <input type="text" id="chat-input" placeholder="Type your message..." aria-label="Chat message">
+              <button onclick="sendChatMessage()" aria-label="Send Message"><span class="material-icons">send</span></button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Announcements Card -->
+        <div class="card" aria-label="Announcements">
+          <h2>Announcements</h2>
+          <ul class="announcement-list">
+            <li><strong>Exam Schedule:</strong> Exams start on Nov 5, 2024.</li>
+            <li><strong>Holiday Notice:</strong> College closed on Dec 25, 2024.</li>
+            <li><strong>Workshop:</strong> ICT workshop on Oct 28, 2024.</li>
+          </ul>
+        </div>
+      </section>
     </div>
   </div>
 
-  <!-- JavaScript for Interactive Features -->
   <script>
-    function openChat() {
-      alert("Opening chat with supervisor...");
-      // Implement chat functionality
+    // Toggle sidebar for mobile view
+    function toggleSidebar() {
+      const sidebar = document.querySelector('.sidebar');
+      sidebar.classList.toggle('active');
     }
 
-    function openPayment() {
-      alert("Redirecting to payment portal...");
-      // Implement payment functionality
+    // Hide sidebar automatically on mobile after a link is clicked
+    document.querySelectorAll('.nav-links li a').forEach(link => {
+      link.addEventListener('click', () => {
+        if (window.innerWidth < 768) {
+          toggleSidebar();
+        }
+      });
+    });
+
+    // Toggle Profile Dropdown Menu
+    function toggleProfileDropdown() {
+      const dropdown = document.getElementById('profile-dropdown');
+      dropdown.style.display = dropdown.style.display === 'flex' ? 'none' : 'flex';
+      dropdown.style.flexDirection = 'column';
     }
 
-    function viewResults() {
-      alert("Loading academic results...");
-      // Implement results viewing
+    // Toggle More Dropdown Menu
+    function toggleMoreDropdown() {
+      const dropdown = document.getElementById('more-dropdown');
+      dropdown.style.display = dropdown.style.display === 'flex' ? 'none' : 'flex';
+      dropdown.style.flexDirection = 'column';
     }
 
-    function viewInternshipDetails() {
-      alert("Showing internship details...");
-      // Implement internship details
+    // Generate Calendar Days for Current Month
+    function generateCalendar() {
+      const calendarGrid = document.getElementById('calendar-grid');
+      calendarGrid.innerHTML = '';
+      const today = new Date();
+      const year = today.getFullYear();
+      const month = today.getMonth();
+      const daysInMonth = new Date(year, month + 1, 0).getDate();
+      for (let day = 1; day <= daysInMonth; day++) {
+        const dayDiv = document.createElement('div');
+        dayDiv.classList.add('calendar-day');
+        dayDiv.textContent = day;
+        if (day === today.getDate()) {
+          dayDiv.classList.add('current');
+          dayDiv.setAttribute('aria-current', 'date');
+        }
+        calendarGrid.appendChild(dayDiv);
+      }
     }
 
-    function downloadLogbook() {
-      alert("Downloading logbook...");
-      // Implement logbook download
+    // Chat functionality
+    function sendChatMessage() {
+      const input = document.getElementById('chat-input');
+      const message = input.value.trim();
+      if (message !== "") {
+        const chatLog = document.getElementById('chat-log');
+        // Create a new chat message element
+        const messageDiv = document.createElement('div');
+        messageDiv.classList.add('chat-message', 'sent');
+        const bubble = document.createElement('div');
+        bubble.classList.add('chat-bubble');
+        bubble.textContent = message;
+        messageDiv.appendChild(bubble);
+        chatLog.appendChild(messageDiv);
+        // Scroll to the bottom
+        chatLog.scrollTop = chatLog.scrollHeight;
+        input.value = "";
+      }
     }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      generateCalendar();
+    });
   </script>
 </body>
 </html>
